@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            function showJson() {
+                var url = document.getElementById("storeurl").value;
+                var id = url.match(/id(\d*)/)[1];
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://itunes.apple.com/lookup?id=' + id + '&country=JP');
+                xhr.onreadystatechange = function (/* evt */) {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            var obj = JSON.parse(xhr.responseText);
+                            document.getElementById('result').value = JSON.stringify(obj, null, 4);
+                        } else {
+                            window.alert('error: ' + xhr.statusText);
+                        }
+                    }
+                };
+                xhr.onerror = function () {};
+                xhr.ontimeout = function () {};
+                xhr.timeout = 5000;
+                xhr.send();
+            }
+        </script>
+    </head>
+    <body>
+        <div class="form-group">
+            <label>AppStoreUrl</label>
+            <input type="text" id="storeurl" class="form-control">
+            <button class="btn btn-sm btn-default" onclick="showJson();">送信</button>
+        </div>
+        <textarea id="result" class="form-control" rows="100"></textarea>
+    </body>
+</html>
